@@ -1,34 +1,29 @@
-function countClouds(skyMap) {
-  const isAdjacent = (cloud, x, y) =>
-    cloud.some(
-      ([cloudX, cloudY]) => Math.abs(cloudX - x) + Math.abs(cloudY - y) < 2
-    );
-  const clouds = [];
-  skyMap.forEach((row, y) =>
-    row.forEach((cell, x) => {
-      if (cell === "1") {
-        const existing = clouds.find(otherCloud =>
-          isAdjacent(otherCloud, x, y)
-        );
-        if (!existing) {
-          clouds.push([[x, y]]);
-        } else {
-          existing.push([x, y]);
-        }
-      }
-    })
-  );
-  const mergedClouds = [];
-  clouds.forEach((cloud, i) => {
-    const adjacent = mergedClouds.find(otherCloud =>
-      otherCloud.some(([x, y]) => isAdjacent(cloud, x, y))
-    );
+// https://app.codesignal.com/challenge/u6ob2kqxxQpCRsHaP
 
-    if (adjacent) {
-      adjacent.push(...cloud);
-    } else {
-      mergedClouds.push(cloud);
+function countClouds(skyMap) {
+  const checked = skyMap.map(() => []);
+  const traceCloud = (x, y) => {
+    if (
+      y < 0 ||
+      y >= skyMap.length ||
+      x < 0 ||
+      x >= skyMap[y].length ||
+      checked[y][x] ||
+      skyMap[y][x] !== "1"
+    ) {
+      return 0;
     }
-  });
-  return mergedClouds.length;
+    checked[y][x] = true;
+    traceCloud(x + 1, y);
+    traceCloud(x - 1, y);
+    traceCloud(x, y + 1);
+    traceCloud(x, y - 1);
+    return 1;
+  };
+
+  return skyMap.reduce(
+    (sum, row, y) =>
+      sum + row.reduce((rowSum, cell, x) => rowSum + traceCloud(x, y), 0),
+    0
+  );
 }
