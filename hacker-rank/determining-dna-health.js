@@ -25,12 +25,9 @@ function readLine() {
 
 function getHealthValue({ genes, health, first, last, sequence }) {
   let value = 0;
-  for (var i = 0; i < sequence.length; i++) {
-    for (let j = first; j <= last; j++) {
-      if (sequence.slice(i, i + genes[j].length) === genes[j]) {
-        value += health[j];
-      }
-    }
+  let allMatch;
+  for (var i = first; i <= last; i++) {
+    value += (sequence.match(new RegExp(`(?=${genes[i]})`, "g")) || []).length * health[i];
   }
   return value;
 }
