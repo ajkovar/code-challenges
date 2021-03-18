@@ -13,7 +13,6 @@ import System.IO
 import System.IO.Unsafe
 import Data.Monoid (Sum(Sum), getSum)
 
-
 cellTotal a i (c, j) = 
     (if i == 0 then c else max 0 (c - a !! (i - 1) !! j)) + 
     (if i == length a - 1 then c else max 0 (c - a !! (i + 1) !! j)) + 
