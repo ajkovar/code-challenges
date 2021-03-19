@@ -1,18 +1,11 @@
 import Data.List (group)
 import Control.Monad (void)
-import Data.Foldable (find)
-
-tagRanks :: (Num a1, Ord a2) => [a2] -> [(a2, a1)]
-tagRanks [] = []
-tagRanks a = scanl tagItem (head a, 1) a
-  where 
-    tagItem (last, place) i = (i, place + (if last > i then 1 else 0))
 
 climbingLeaderboard :: [Int] -> [Int] -> [Int]
 climbingLeaderboard ranks scores = 
   reverse $ climbingLeaderboard' 1 taggedRanks reversed
   where 
-    taggedRanks = tagRanks ranks
+    taggedRanks = zip (head <$> group ranks) [ 1 .. ]
     reversed = reverse scores
 
 climbingLeaderboard' :: Int -> [(Int, Int)] -> [Int] -> [Int]
