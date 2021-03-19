@@ -2,18 +2,27 @@ import Data.List (group)
 import Control.Monad (void)
 import Data.Foldable (find)
 
-assignRanks :: (Num a1, Ord a2) => [a2] -> [(a2, a1)]
-assignRanks [] = []
-assignRanks a = scanl (\(last, place) i -> (i, place + (if last > i then 1 else 0))) (head a, 1) a
+tagRanks :: (Num a1, Ord a2) => [a2] -> [(a2, a1)]
+tagRanks [] = []
+tagRanks a = scanl tagItem (head a, 1) a
+  where 
+    tagItem (last, place) i = (i, place + (if last > i then 1 else 0))
 
-climbingLeaderboard :: [Int] -> [Int] -> String
-climbingLeaderboard ranked player =
-  unlines $ fmap (show . rank) player
-  where
-    ranked' = assignRanks ranked
-    rank i = case find ((<= i) . fst) ranked' of
-      Nothing -> snd (last ranked') + 1
-      Just x -> snd x + (if i >= fst x then 0 else 1)
+climbingLeaderboard :: [Int] -> [Int] -> [Int]
+climbingLeaderboard ranks scores = 
+  reverse $ climbingLeaderboard' 1 taggedRanks reversed
+  where 
+    taggedRanks = tagRanks ranks
+    reversed = reverse scores
+
+climbingLeaderboard' :: Int -> [(Int, Int)] -> [Int] -> [Int]
+climbingLeaderboard' _ [] [] = []
+climbingLeaderboard' lastRank [] playerValues = lastRank + 1 <$ playerValues
+climbingLeaderboard' _ _ [] = []
+climbingLeaderboard' _ rankedValues@((rankedValue, rank):xs) playerValues@(playerValue:ys) = 
+  if rankedValue <= playerValue
+    then rank:climbingLeaderboard' rank rankedValues ys
+    else climbingLeaderboard' rank xs playerValues
 
 main :: IO ()
 main = do
@@ -21,5 +30,6 @@ main = do
   let lns = lines contents
   let ranked = toScores $ lns !! 1
   let player = toScores $ lns !! 3
-  void $ putStrLn $ climbingLeaderboard ranked player
-  where toScores = fmap (read :: String -> Int) . words
+  void $ putStrLn $ unlines $ show <$> climbingLeaderboard ranked player
+  where 
+    toScores = fmap (read :: String -> Int) . words
