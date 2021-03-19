@@ -1,5 +1,4 @@
 import Data.List (group)
-import Control.Monad (void)
 
 climbingLeaderboard :: [Int] -> [Int] -> [Int]
 climbingLeaderboard ranks scores = 
@@ -23,6 +22,6 @@ main = do
   let lns = lines contents
   let ranked = toScores $ lns !! 1
   let player = toScores $ lns !! 3
-  void $ putStrLn $ unlines $ show <$> climbingLeaderboard ranked player
+  putStrLn $ unlines $ show <$> climbingLeaderboard ranked player
   where 
     toScores = fmap (read :: String -> Int) . words
