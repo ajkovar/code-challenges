@@ -1,5 +1,5 @@
 import Control.Monad (replicateM_)
-import Data.List (tails, inits, scanl', foldl')
+import Data.List (tails, scanl')
 import Data.Bits (xor)
 
 sansaXor :: [Int] -> Int

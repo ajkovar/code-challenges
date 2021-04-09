@@ -1,10 +1,12 @@
 import Control.Monad (replicateM_)
-import Data.List (tails, inits, scanl', foldl')
+import Data.List (tails, inits)
 import Data.Bits (xor)
 
 sansaXor :: [Int] -> Int
-sansaXor s = xors $ xors <$> fmap (scanl' xor 0) ((init . tails) s)
-  where xors = foldr xor 0
+sansaXor arr = xors (xors <$> combinations)
+  where
+    combinations = concatMap (init . tails) ((tail . inits) arr)
+    xors = foldr xor 0
 
 main :: IO ()
 main = do
