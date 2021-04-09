@@ -1,10 +1,10 @@
 import Control.Monad (replicateM_)
-import Data.List (tails, inits, scanl', foldl')
 import Data.Bits (xor)
 
 sansaXor :: [Int] -> Int
-sansaXor s = xors $ xors <$> fmap (scanl' xor 0) ((init . tails) s)
-  where xors = foldr xor 0
+sansaXor s
+  | even (length s) = 0
+  | otherwise = foldr (xor . fst) 0 (filter (even . snd) (zip s [0..]))
 
 main :: IO ()
 main = do
