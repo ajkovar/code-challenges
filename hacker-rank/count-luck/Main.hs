@@ -10,7 +10,7 @@ type Coord = (Int, Int)
 readForest :: IO ([[Char]], Int)
 readForest = do
   [n, m] <- fmap read . words <$> getLine
-  matrix <- replicateM n (head . words <$> getLine)
+  matrix <- replicateM n getLine 
   prediction <- read <$> getLine
   return (matrix, prediction)
 
