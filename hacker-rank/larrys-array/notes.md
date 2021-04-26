@@ -42,3 +42,4 @@ So, in order to check if the array can ever be sorted by rotating R consecutive 
 - https://stackoverflow.com/questions/337664/counting-inversions-in-an-array#:~:text=The%20number%20of%20inversions%20in,)%20time%2C%20which%20is%20optimal.
 - https://riptutorial.com/haskell/example/7552/merge-sort
 - https://www.maa.org/press/periodicals/loci/joma/parity-theorem-for-permutations-introduction
+- https://en.wikipedia.org/wiki/Parity_of_a_permutation
