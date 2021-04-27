@@ -9,8 +9,8 @@ parseList = do
   array <- fmap words . lines <$> getContents
   return $ Prelude.zipWith (\[j, word] i -> (if i < n then "-" else word, Prelude.read j)) array [0 ..]
 
-createArray :: [([Char], Int)] -> [String]
-createArray list = runST $ do
+countingSort :: [([Char], Int)] -> [String]
+countingSort list = runST $ do
   v <- M.replicate max 0
   C.forM_ list $ \(word, i) -> do
     count <- M.read v i
@@ -33,5 +33,5 @@ createArray list = runST $ do
 main :: IO ()
 main = do
   list <- parseList
-  putStrLn $ unwords $ createArray list
+  putStrLn $ unwords $ countingSort list
   return ()
